@@ -8,19 +8,32 @@ const AppRouter = ({ userObj, refreshUser }) => {
   return (
     <HashRouter>
       {userObj && <Navigation userObj={userObj} />}
-      <Routes>
-        {userObj ? (
-          <>
-            <Route path="/" element={<Home userObj={userObj} />}></Route>
-            <Route
-              path="/profile"
-              element={<Profile userObj={userObj} refreshUser={refreshUser} />}
-            ></Route>
-          </>
-        ) : (
-          <Route path="/" element={<Auth />}></Route>
-        )}
-      </Routes>
+      <div
+        style={{
+          maxWidth: "890px",
+          width: "100%",
+          margin: "0 auto",
+          marginTop: "80px",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Routes>
+          {userObj ? (
+            <>
+              <Route path="/" element={<Home userObj={userObj} />}></Route>
+              <Route
+                path="/profile"
+                element={
+                  <Profile userObj={userObj} refreshUser={refreshUser} />
+                }
+              ></Route>
+            </>
+          ) : (
+            <Route path="/" element={<Auth />}></Route>
+          )}
+        </Routes>
+      </div>
     </HashRouter>
   );
 };

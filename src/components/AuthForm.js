@@ -46,7 +46,7 @@ const AuthForm = ({ auth, socialError }) => {
   const toggleAccount = () => setNewAccount((prev) => !prev);
   return (
     <>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} className="container">
         <input
           onChange={onChange}
           name="email"
@@ -54,6 +54,7 @@ const AuthForm = ({ auth, socialError }) => {
           placeholder="Email"
           required
           value={form.email}
+          className="authInput"
         />
         <input
           onChange={onChange}
@@ -63,11 +64,16 @@ const AuthForm = ({ auth, socialError }) => {
           required
           minLength="6"
           value={form.password}
+          className="authInput"
         />
-        <input type="submit" value={newAccount ? "Create Account" : "Log In"} />
-        {error}
+        <input
+          type="submit"
+          value={newAccount ? "Create Account" : "Log In"}
+          className="authInput authSubmit"
+        />
+        {error && <span className="authError">{error}</span>}
       </form>
-      <span onClick={toggleAccount}>
+      <span onClick={toggleAccount} className="authSwitch">
         {newAccount ? "Sign in" : "Create Account"}
       </span>
     </>

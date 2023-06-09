@@ -46,15 +46,22 @@ const Profile = ({ userObj, refreshUser }) => {
     }
   };
   return (
-    <>
-      <form onSubmit={onSubmit}>
+    <div className="container">
+      <form onSubmit={onSubmit} className="profileForm">
         <input
           type="text"
           placeholder="New Display Name"
           value={newDisplayName}
           onChange={onChangeDisplayName}
+          autoFocus
+          className="formInput"
         />
-        <input type="submit" value="Update Profile" />
+        <input
+          type="submit"
+          value="Update Profile"
+          className="formBtn"
+          style={{ marginTop: "10px" }}
+        />
       </form>
       <div>
         {nweets.map((nweet) => (
@@ -65,8 +72,10 @@ const Profile = ({ userObj, refreshUser }) => {
           />
         ))}
       </div>
-      <button onClick={onLogOutClick}>Log Out</button>
-    </>
+      <span className="formBtn" onClick={onLogOutClick}>
+        Log Out
+      </span>
+    </div>
   );
 };
 
