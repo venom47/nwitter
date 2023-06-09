@@ -1,26 +1,44 @@
-import { useState } from "react";
+import Nweet from "components/Nweet";
+import NweetFactory from "components/NweetFactory";
+import { dbService } from "fbase";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { useEffect, useState } from "react";
 
-const Home = () => {
-  const [nweet, setNweet] = useState("");
-  const onSubmit = (event) => {
-    event.preventDefault();
-  };
-  const onChange = (event) => {
-    setNweet(event.target.value);
-  };
+const Home = ({ userObj }) => {
+  const [didMount, setDidMount] = useState(false);
+  useEffect(() => setDidMount(true), []);
+  const [nweets, setNweets] = useState([]);
+  useEffect(() => {
+    if (didMount) {
+      try {
+        const q = query(
+          collection(dbService, "nweets"),
+          orderBy("createdAt", "desc")
+        );
+        onSnapshot(q, (snapshot) => {
+          const nweetArr = snapshot.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+          }));
+          setNweets(nweetArr);
+        });
+      } catch (e) {
+        console.log(e.message);
+      }
+    }
+  }, [didMount]);
   return (
     <div>
-      <form onSubmit={onSubmit}>
-        <input
-          type="text"
-          placeholder="Waht's on your mind?"
-          maxLength={120}
-          required
-          onChange={onChange}
-          value={nweet}
-        />
-        <input type="submit" value="Nweet" />
-      </form>
+      <NweetFactory userObj={userObj} />
+      <div>
+        {nweets.map((nweet) => (
+          <Nweet
+            key={nweet.id}
+            nweetObj={nweet}
+            isOwner={nweet.creatorId === userObj.uid}
+          />
+        ))}
+      </div>
     </div>
   );
 };
